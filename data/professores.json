@@ -38,5 +38,13 @@
     "senha": "123",
     "slug": "prof-teste-2",
     "dataCadastro": "2026-05-31T03:25:00.487Z"
+  },
+  {
+    "id": "fac53089-8bc3-46dd-aeb7-fb35ad08b677",
+    "nome": "Prof Teste ESM",
+    "email": "teste_esm@email.com",
+    "senha": "123",
+    "slug": "prof-teste-esm",
+    "dataCadastro": "2026-05-31T03:38:20.704Z"
   }
 ]

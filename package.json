@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Sistema de agendamento de aulas integrado a cadastro de alunos",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js"
   },

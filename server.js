@@ -1,7 +1,11 @@
-const express = require('express');
-const fs = require('fs/promises');
-const path = require('path');
-const crypto = require('crypto');
+import express from 'express';
+import fs from 'fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import crypto from 'crypto';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
