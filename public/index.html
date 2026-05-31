@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Links Hub - Agendamento de Aulas</title>
+  
+  <!-- Fontes Premium do Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Estilo Principal -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark-theme">
+  <!-- Layout Principal -->
+  <div class="app-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="app-sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="logo-icon">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+          <span class="logo-text">Links<span>Hub</span></span>
+        </div>
+        
+        <!-- SELETOR DE PERFIL (ROLE SWITCHER) -->
+        <div class="role-selector-container">
+          <div class="role-selector">
+            <button class="role-btn active" id="role-btn-professor" data-role="professor">
+              Professor
+            </button>
+            <button class="role-btn" id="role-btn-aluno" data-role="aluno">
+              Aluno
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-target="dashboard">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+          <span>Painel</span>
+        </button>
+        <button class="nav-item" data-target="alunos">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <span>Alunos</span>
+        </button>
+        <button class="nav-item" data-target="agenda">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          <span>Agenda</span>
+        </button>
+      </nav>
+
+      <!-- CARD DO ALUNO CONECTADO (SIMULADOR DE LOGIN) -->
+      <div class="student-profile-widget hidden" id="student-profile-card">
+        <div class="profile-avatar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </div>
+        <div class="profile-info">
+          <h4 id="logged-student-name">Aluno Desconectado</h4>
+          <span id="logged-student-email">clique para conectar</span>
+        </div>
+        <button class="btn-change-student" id="btn-trocar-aluno-login" title="Sair / Trocar Aluno">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        </button>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="theme-switcher">
+          <button id="theme-toggle-btn" title="Alternar Tema">
+            <svg id="moon-icon" class="theme-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <svg id="sun-icon" class="theme-icon hidden" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            <span id="theme-text">Modo Claro</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-content">
+      
+      <!-- HEADER -->
+      <header class="app-header">
+        <div class="header-search">
+          <h1 id="view-title">Painel Geral</h1>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary flex-btn" id="header-btn-aluno">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="16" y1="11" x2="22" y2="11"></line></svg>
+            <span>+ Aluno</span>
+          </button>
+          <button class="btn btn-primary flex-btn" id="header-btn-agendar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line><line x1="12" y1="14" x2="12" y2="18"></line><line x1="10" y1="16" x2="14" y2="16"></line></svg>
+            <span>Agendar Aula</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- SEÇÕES DINÂMICAS DA SPA -->
+      <div class="content-body">
+        
+        <!-- ABA 1: DASHBOARD -->
+        <section id="dashboard-view" class="view-section active">
+          <!-- Estatísticas rápidas -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon-wrapper purple">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+              </div>
+              <div class="stat-info">
+                <h3>Total de Alunos</h3>
+                <p class="stat-value" id="stat-alunos">0</p>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <div class="stat-icon-wrapper blue">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              </div>
+              <div class="stat-info">
+                <h3>Aulas Hoje</h3>
+                <p class="stat-value" id="stat-aulas-hoje">0</p>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon-wrapper emerald">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              </div>
+              <div class="stat-info">
+                <h3>Aulas na Semana</h3>
+                <p class="stat-value" id="stat-aulas-semana">0</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Conteúdo Duplo Dashboard -->
+          <div class="dashboard-grid">
+            <!-- Próximas aulas -->
+            <div class="card glass-card list-card">
+              <div class="card-header">
+                <h2>Próximas Aulas Agendadas</h2>
+                <button class="btn-text" id="go-to-calendar-btn">Ver Agenda Completa</button>
+              </div>
+              <div class="card-body">
+                <div class="agenda-list" id="dashboard-agenda-list">
+                  <div class="empty-state">
+                    <p>Nenhuma aula agendada para os próximos dias.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Atalhos Rápidos e Dica -->
+          <div class="side-panel-grid">
+              <div class="card glass-card info-card bg-gradient-purple">
+                <h3>Agendamento Restrito</h3>
+                <p>Lembre-se: O sistema <strong>só permite</strong> o agendamento de aulas para alunos previamente cadastrados.</p>
+                <div class="card-actions">
+                  <button class="btn btn-light-blur" id="dash-btn-cadastrar">Cadastrar Novo Aluno</button>
+                </div>
+              </div>
+              
+              <div class="card glass-card info-card bg-gradient-blue" id="card-link-aluno">
+                <h3>🔗 Link dos Seus Alunos</h3>
+                <p style="font-size:12px; word-break:break-all;" id="display-link-aluno">Carregando...</p>
+                <div class="card-actions">
+                  <button class="btn btn-light-blur" id="btn-copiar-link">📋 Copiar Link</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ABA 2: ALUNOS -->
+        <section id="alunos-view" class="view-section">
+          <div class="table-actions-bar">
+            <div class="search-input-wrapper">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" id="search-alunos-input" placeholder="Buscar aluno por Nome, CPF ou E-mail...">
+            </div>
+            <button class="btn btn-primary flex-btn" id="btn-abrir-cadastro-aluno">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="16" y1="11" x2="22" y2="11"></line></svg>
+              <span>Novo Aluno</span>
+            </button>
+          </div>
+
+          <div class="card table-card glass-card">
+            <div class="table-responsive">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>E-mail</th>
+                    <th>Telefone</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="alunos-table-body">
+                  <!-- Carregado via JS -->
+                  <tr>
+                    <td colspan="6" class="table-empty">Carregando alunos...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ABA 3: AGENDA E CALENDÁRIO -->
+        <section id="agenda-view" class="view-section">
+          <div class="agenda-layout">
+            <!-- Lado Esquerdo: Calendário Interativo -->
+            <div class="card glass-card calendar-container">
+              <div class="calendar-header-nav">
+                <button class="btn-icon" id="cal-prev-month">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <h2 id="calendar-month-year">Janeiro 2026</h2>
+                <button class="btn-icon" id="cal-next-month">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+              </div>
+
+              <div class="calendar-grid">
+                <!-- Cabeçalhos dos Dias da Semana -->
+                <div class="weekday">Dom</div>
+                <div class="weekday">Seg</div>
+                <div class="weekday">Ter</div>
+                <div class="weekday">Qua</div>
+                <div class="weekday">Qui</div>
+                <div class="weekday">Sex</div>
+                <div class="weekday">Sáb</div>
+                
+                <!-- Dias do mês gerados pelo JS -->
+                <div class="calendar-days" id="calendar-days-container"></div>
+              </div>
+            </div>
+
+            <!-- Lado Direito: Aulas do Dia Selecionado -->
+            <div class="card glass-card day-details-container">
+              <div class="day-details-header">
+                <div>
+                  <h3 id="selected-day-title">Aulas de Hoje</h3>
+                  <span id="selected-day-subtitle">30 de Maio de 2026</span>
+                </div>
+                <button class="btn btn-primary btn-sm flex-btn" id="btn-agendar-dia-selecionado">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <span>Agendar</span>
+                </button>
+              </div>
+
+              <div class="day-details-body" id="day-agenda-list">
+                <!-- Inserido dinamicamente por JS -->
+                <div class="empty-state">
+                  <p>Nenhuma aula agendada para este dia.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ==========================================
+       MODAL: CADASTRO DE ALUNOS
+       ========================================== -->
+  <div class="modal-overlay" id="modal-aluno">
+    <div class="modal-box glass-card card">
+      <div class="modal-header">
+        <h2 id="modal-aluno-title">Cadastrar Novo Aluno</h2>
+        <button class="btn-icon modal-close-btn" id="btn-close-modal-aluno">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      
+      <form id="form-aluno" novalidate>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="aluno-nome">Nome Completo</label>
+            <input type="text" id="aluno-nome" required placeholder="Ex: Maria Oliveira">
+            <span class="error-message" id="err-nome"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="aluno-cpf">CPF</label>
+            <input type="text" id="aluno-cpf" required placeholder="Ex: 000.000.000-00">
+            <span class="error-message" id="err-cpf"></span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="aluno-email">E-mail</label>
+              <input type="email" id="aluno-email" required placeholder="Ex: maria@email.com">
+              <span class="error-message" id="err-email"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="aluno-telefone">Telefone</label>
+              <input type="text" id="aluno-telefone" required placeholder="Ex: (11) 99999-9999">
+              <span class="error-message" id="err-telefone"></span>
+            </div>
+          </div>
+          
+          <div class="alert alert-danger hidden" id="form-aluno-global-error">
+            Erro ao salvar o aluno. Verifique as informações.
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close-btn" id="btn-cancelar-aluno">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-salvar-aluno">Cadastrar Aluno</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL: NOVO AGENDAMENTO DE AULA
+       ========================================== -->
+  <div class="modal-overlay" id="modal-agendamento">
+    <div class="modal-box glass-card card">
+      <div class="modal-header">
+        <h2>Agendar Nova Aula</h2>
+        <button class="btn-icon modal-close-btn" id="btn-close-modal-agendar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <form id="form-agendamento" novalidate>
+        <div class="modal-body">
+          
+          <!-- PESQUISA DO ALUNO CADASTRADO (CRUCIAL) -->
+          <div class="form-group relative">
+            <label for="busca-aluno-input">Aluno (Pesquisar no Banco de Dados)</label>
+            <div class="autocomplete-wrapper">
+              <input type="text" id="busca-aluno-input" required autocomplete="off" placeholder="Digite o nome, e-mail ou CPF para buscar...">
+              <span class="input-badge hidden" id="selected-aluno-badge">✓ Selecionado</span>
+            </div>
+            <input type="hidden" id="agendar-aluno-id">
+            <span class="error-message" id="err-busca-aluno"></span>
+            
+            <!-- Caixa Autocomplete Resultados -->
+            <div class="autocomplete-results hidden" id="autocomplete-results-box">
+              <!-- Preenchido via JS -->
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="agendar-data">Data</label>
+              <input type="date" id="agendar-data" required>
+              <span class="error-message" id="err-data"></span>
+            </div>
+            
+            <div class="form-group">
+              <label for="agendar-disciplina">Disciplina / Assunto</label>
+              <input type="text" id="agendar-disciplina" required placeholder="Ex: Matemática, Física, Inglês...">
+              <span class="error-message" id="err-disciplina"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="agendar-inicio">Horário de Início</label>
+              <select id="agendar-inicio" required>
+                <!-- Preenchido dinamicamente via JS de 30 em 30 min -->
+              </select>
+              <span class="error-message" id="err-inicio"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="agendar-fim">Horário de Término</label>
+              <select id="agendar-fim" required>
+                <!-- Preenchido dinamicamente via JS -->
+              </select>
+              <span class="error-message" id="err-fim"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="agendar-observacoes">Observações (Opcional)</label>
+            <textarea id="agendar-observacoes" rows="3" placeholder="Detalhes sobre a matéria, tarefas ou tópicos a serem abordados..."></textarea>
+          </div>
+
+          <!-- Alert de conflitos ou erros gerais do servidor -->
+          <div class="alert alert-danger hidden" id="form-agendamento-global-error">
+            Erro ao salvar agendamento.
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-close-btn" id="btn-cancelar-agendar">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-salvar-agendamento">Confirmar Agendamento</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL: SIMULAÇÃO DE LOGIN DO ALUNO
+       ========================================== -->
+  <div class="modal-overlay" id="modal-login-aluno" data-backdrop="static">
+    <div class="modal-box glass-card card">
+      <div class="modal-header">
+        <h2>Acesso do Aluno - Selecionar Perfil</h2>
+      </div>
+      
+      <div class="modal-body">
+        <p style="margin-bottom: 20px; font-size: 14px; color: var(--text-secondary); line-height: 1.6;">
+          Para acessar a área do aluno e agendar suas aulas, selecione seu cadastro existente no banco de dados.
+        </p>
+
+        <!-- BUSCA RAPIDA DO ALUNO -->
+        <div class="form-group relative">
+          <label for="login-aluno-busca">Digite seu Nome, CPF ou E-mail</label>
+          <div class="autocomplete-wrapper">
+            <input type="text" id="login-aluno-busca" autocomplete="off" placeholder="Pesquisar cadastro...">
+          </div>
+          <input type="hidden" id="login-aluno-id-selecionado">
+          
+          <!-- Resultados -->
+          <div class="autocomplete-results hidden" id="login-autocomplete-box">
+            <!-- Preenchido via JS -->
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: center; margin: 15px 0;">
+          <span style="height: 1px; background-color: var(--glass-border); flex-grow: 1;"></span>
+          <span style="padding: 0 16px; font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">ou</span>
+          <span style="height: 1px; background-color: var(--glass-border); flex-grow: 1;"></span>
+        </div>
+
+        <div style="text-align: center;">
+          <button type="button" class="btn btn-secondary flex-btn" id="btn-login-novo-cadastro" style="width: 100%;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="16" y1="11" x2="22" y2="11"></line></svg>
+            <span>Criar Novo Cadastro de Aluno</span>
+          </button>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="btn-cancelar-login-aluno">Voltar para Professor</button>
+        <button type="button" class="btn btn-primary" id="btn-confirmar-login-aluno" disabled>Entrar no Portal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast-container"></div>
+
+  <!-- ==========================================
+       OVERLAY: AUTENTICACAO DO PROFESSOR
+       ========================================== -->
+  <div id="professor-auth-overlay" style="
+    position: fixed; inset: 0; z-index: 5000;
+    background: var(--bg-primary);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  ">
+    <div style="
+      width: 100%; max-width: 460px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+      overflow: hidden;
+      animation: cardEntry 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+    ">
+      <!-- Cabeçalho -->
+      <div style="text-align:center; padding: 40px 32px 20px;">
+        <div style="display:inline-flex; align-items:center; gap:10px; margin-bottom:16px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 8px var(--primary-glow))"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+          <span style="font-size:22px; font-weight:800;">Links<span style="color:var(--primary)">Hub</span></span>
+        </div>
+        <h2 style="font-size:20px; font-weight:800; margin-bottom:6px;">Acesso do Professor</h2>
+        <p style="font-size:13px; color:var(--text-secondary);">Entre na sua conta ou crie uma conta de professor.</p>
+      </div>
+
+      <!-- Tabs -->
+      <div style="padding: 0 32px;">
+        <div style="display:flex; background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:12px; padding:4px; margin-bottom:20px;">
+          <button id="prof-tab-login" style="flex:1; background:var(--primary); color:#fff; border:none; font-family:inherit; font-size:13px; font-weight:700; padding:9px; border-radius:8px; cursor:pointer; box-shadow:0 2px 8px var(--primary-glow);">Entrar</button>
+          <button id="prof-tab-registro" style="flex:1; background:none; color:var(--text-secondary); border:none; font-family:inherit; font-size:13px; font-weight:700; padding:9px; border-radius:8px; cursor:pointer; transition:color .2s;">Criar Conta</button>
+        </div>
+
+        <!-- Formulário de Login -->
+        <form id="form-prof-login" novalidate>
+          <div style="margin-bottom:16px;">
+            <label style="display:block; font-size:13px; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">E-mail</label>
+            <input type="email" id="prof-login-email" required placeholder="seu@email.com" style="width:100%; background:var(--glass-bg); border:1px solid var(--glass-border); color:var(--text-primary); padding:12px 14px; border-radius:12px; font-family:inherit; font-size:14px;">
+          </div>
+          <div style="margin-bottom:20px;">
+            <label style="display:block; font-size:13px; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">Senha</label>
+            <input type="password" id="prof-login-senha" required placeholder="Sua senha" style="width:100%; background:var(--glass-bg); border:1px solid var(--glass-border); color:var(--text-primary); padding:12px 14px; border-radius:12px; font-family:inherit; font-size:14px;">
+          </div>
+          <div id="prof-login-error" style="display:none; background:rgba(239,68,68,.12); color:#ef4444; border:1px solid rgba(239,68,68,.25); border-radius:10px; padding:10px 14px; font-size:13px; font-weight:600; margin-bottom:16px;"></div>
+          <button type="submit" style="width:100%; background:var(--primary); color:#fff; border:none; padding:13px; border-radius:12px; font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; box-shadow:0 4px 12px var(--primary-glow);">Entrar no Painel</button>
+        </form>
+
+        <!-- Formulário de Registro -->
+        <form id="form-prof-registro" novalidate style="display:none;">
+          <div style="margin-bottom:14px;">
+            <label style="display:block; font-size:13px; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">Seu Nome</label>
+            <input type="text" id="prof-reg-nome" required placeholder="Ex: Prof. João da Silva" style="width:100%; background:var(--glass-bg); border:1px solid var(--glass-border); color:var(--text-primary); padding:12px 14px; border-radius:12px; font-family:inherit; font-size:14px;">
+          </div>
+          <div style="margin-bottom:14px;">
+            <label style="display:block; font-size:13px; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">E-mail</label>
+            <input type="email" id="prof-reg-email" required placeholder="seu@email.com" style="width:100%; background:var(--glass-bg); border:1px solid var(--glass-border); color:var(--text-primary); padding:12px 14px; border-radius:12px; font-family:inherit; font-size:14px;">
+          </div>
+          <div style="margin-bottom:14px;">
+            <label style="display:block; font-size:13px; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">Senha</label>
+            <input type="password" id="prof-reg-senha" required placeholder="Crie uma senha" style="width:100%; background:var(--glass-bg); border:1px solid var(--glass-border); color:var(--text-primary); padding:12px 14px; border-radius:12px; font-family:inherit; font-size:14px;">
+          </div>
+          <div style="margin-bottom:20px;">
+            <label style="display:block; font-size:13px; font-weight:700; color:var(--text-secondary); margin-bottom:4px;">Seu Identificador (slug)</label>
+            <span style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:6px;">Aparece no link dos seus alunos. Deixe em branco para gerar automaticamente.</span>
+            <input type="text" id="prof-reg-slug" placeholder="Ex: prof-joao, maria-ingles" style="width:100%; background:var(--glass-bg); border:1px solid var(--glass-border); color:var(--text-primary); padding:12px 14px; border-radius:12px; font-family:inherit; font-size:14px;">
+          </div>
+          <div id="prof-reg-error" style="display:none; background:rgba(239,68,68,.12); color:#ef4444; border:1px solid rgba(239,68,68,.25); border-radius:10px; padding:10px 14px; font-size:13px; font-weight:600; margin-bottom:16px;"></div>
+          <button type="submit" style="width:100%; background:var(--primary); color:#fff; border:none; padding:13px; border-radius:12px; font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; box-shadow:0 4px 12px var(--primary-glow);">Criar Conta de Professor</button>
+        </form>
+      </div>
+
+      <div style="height:24px;"></div>
+    </div>
+  </div>
+
+  <!-- LÓGICA DO FRONTEND -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

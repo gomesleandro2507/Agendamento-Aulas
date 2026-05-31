@@ -1,0 +1,42 @@
+[
+  {
+    "id": "aluno-1-mock-uuid",
+    "nome": "João Silva",
+    "email": "joao.silva@email.com",
+    "telefone": "(11) 98765-4321",
+    "cpf": "123.456.789-09",
+    "dataCadastro": "2026-05-30T18:00:00.000Z",
+    "status": "ativo",
+    "professorId": "21afe9ee-feed-484d-a2fc-84bcf40691eb"
+  },
+  {
+    "id": "aluno-2-mock-uuid",
+    "nome": "Maria Oliveira",
+    "email": "maria.oliveira@email.com",
+    "telefone": "(21) 99888-7766",
+    "cpf": "987.654.321-01",
+    "dataCadastro": "2026-05-30T18:10:00.000Z",
+    "status": "ativo",
+    "professorId": "21afe9ee-feed-484d-a2fc-84bcf40691eb"
+  },
+  {
+    "id": "aluno-3-mock-uuid",
+    "nome": "Carlos Souza",
+    "email": "carlos.souza@email.com",
+    "telefone": "(31) 97777-8899",
+    "cpf": "456.789.123-12",
+    "dataCadastro": "2026-05-30T18:20:00.000Z",
+    "status": "ativo",
+    "professorId": "21afe9ee-feed-484d-a2fc-84bcf40691eb"
+  },
+  {
+    "id": "652d3539-3217-4603-9417-4007510e8879",
+    "nome": "Leandro Pereira Gomes",
+    "email": "lpgomes2507@gmail.com",
+    "telefone": "(21) 97527-0356",
+    "cpf": "092.258.367-67",
+    "dataCadastro": "2026-05-31T00:41:29.326Z",
+    "status": "ativo",
+    "professorId": "21afe9ee-feed-484d-a2fc-84bcf40691eb"
+  }
+]
