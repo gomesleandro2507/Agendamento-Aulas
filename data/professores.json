@@ -6,5 +6,21 @@
     "senha": "123456",
     "slug": "prof-joao",
     "dataCadastro": "2026-05-31T01:16:35.353Z"
+  },
+  {
+    "id": "ba62272e-1c9f-4a53-9719-0eb6b76be974",
+    "nome": "Leandro",
+    "email": "teste@email.com",
+    "senha": "123456",
+    "slug": "leandro",
+    "dataCadastro": "2026-05-31T03:11:01.371Z"
+  },
+  {
+    "id": "254cc59e-e7a2-4ac6-bf07-ecbbf30665c8",
+    "nome": "Leandro Gomes",
+    "email": "leandro@teste.com",
+    "senha": "minha123",
+    "slug": "prof-leandro",
+    "dataCadastro": "2026-05-31T03:12:47.753Z"
   }
 ]

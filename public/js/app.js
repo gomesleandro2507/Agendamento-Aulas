@@ -56,6 +56,7 @@ const btnLoginNovoCadastro = document.getElementById('btn-login-novo-cadastro');
 
 let loginDebounce = null;
 let isRegisteringFromLogin = false; // Flag para auto-login pós-cadastro
+let appJaInicializado = false;       // Evita double-init dos módulos
 
 /**
  * getters para controle dos módulos secundários
@@ -79,26 +80,35 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Inicializa o tema salvo no localStorage
   inicializarTema();
 
+  // Configura formulários do overlay de professor (deve ser antes de esconder)
+  configurarAuthProfessor();
+
   // Verifica sessão do professor
   const sessaoSalva = localStorage.getItem('professor_session');
   if (sessaoSalva) {
     try {
       currentProfessor = JSON.parse(sessaoSalva);
       esconderOverlayProfessor();
-      inicializarApp();
+      await inicializarApp();
     } catch (e) {
+      console.error('Sessão inválida:', e);
       localStorage.removeItem('professor_session');
       mostrarOverlayProfessor();
     }
   } else {
     mostrarOverlayProfessor();
   }
-
-  // Configura formulários do overlay de professor
-  configurarAuthProfessor();
 });
 
 async function inicializarApp() {
+  // Evita inicializar módulos mútuos múltiplas vezes
+  if (appJaInicializado) {
+    await carregarDashboardStats();
+    atualizarLinkProfessor();
+    return;
+  }
+  appJaInicializado = true;
+
   // Inicializa os módulos específicos do sistema
   await initStudents();
   await initCalendar();
