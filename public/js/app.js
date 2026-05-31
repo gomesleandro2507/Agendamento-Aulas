@@ -77,6 +77,12 @@ export function getCurrentProfessorId() {
  * Inicialização Completa da SPA ao carregar a página
  */
 document.addEventListener('DOMContentLoaded', async () => {
+  // Verifica se o usuário abriu o arquivo localmente pelo protocolo file://
+  if (window.location.protocol === 'file:') {
+    alert('ATENÇÃO: Você abriu o arquivo HTML diretamente no disco (file://). Para que o sistema funcione corretamente (cadastro de professores, alunos e agendamentos), você DEVE acessar o endereço http://localhost:3000 no seu navegador.');
+    return;
+  }
+
   // Inicializa o tema salvo no localStorage
   inicializarTema();
 
