@@ -22,5 +22,21 @@
     "senha": "minha123",
     "slug": "prof-leandro",
     "dataCadastro": "2026-05-31T03:12:47.753Z"
+  },
+  {
+    "id": "d70bf138-a63e-475d-ac09-65ff63f41975",
+    "nome": "Prof Teste",
+    "email": "teste_novo@email.com",
+    "senha": "123",
+    "slug": "prof-teste",
+    "dataCadastro": "2026-05-31T03:24:03.804Z"
+  },
+  {
+    "id": "76072300-d35b-4818-af16-6a9a56e9bde1",
+    "nome": "Prof Teste 2",
+    "email": "teste_novo2@email.com",
+    "senha": "123",
+    "slug": "prof-teste-2",
+    "dataCadastro": "2026-05-31T03:25:00.487Z"
   }
 ]

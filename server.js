@@ -6,6 +6,16 @@ const crypto = require('crypto');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middleware de Logs no Terminal
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} - Status: ${res.statusCode} (${duration}ms)`);
+  });
+  next();
+});
+
 // Middleware para JSON e arquivos estáticos
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -25,27 +35,56 @@ const ALUNOS_FILE       = path.join(__dirname, 'data', 'alunos.json');
 const AGENDAMENTOS_FILE = path.join(__dirname, 'data', 'agendamentos.json');
 const PROFESSORES_FILE  = path.join(__dirname, 'data', 'professores.json');
 
-// Auxiliares para ler/escrever arquivos com tratamento de erro
+// Auxiliares para ler/escrever arquivos com tratamento de erro e Retry (OneDrive Safe)
 async function lerBanco(filePath) {
-  try {
-    const data = await fs.readFile(filePath, 'utf-8');
-    return JSON.parse(data || '[]');
-  } catch (error) {
-    if (error.code === 'ENOENT') {
-      await fs.writeFile(filePath, '[]');
-      return [];
+  const maxRetries = 5;
+  let delay = 50;
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      const data = await fs.readFile(filePath, 'utf-8');
+      return JSON.parse(data || '[]');
+    } catch (error) {
+      if (error.code === 'ENOENT') {
+        try {
+          await fs.writeFile(filePath, '[]');
+          return [];
+        } catch (e) {
+          // Se falhar ao criar o arquivo, tenta novamente no loop
+        }
+      }
+      
+      const isLocked = error.code === 'EBUSY' || error.code === 'EPERM' || error.code === 'EACCES';
+      if (isLocked && i < maxRetries - 1) {
+        console.warn(`[AVISO] Leitura bloqueada em ${filePath}. Tentando novamente em ${delay}ms... (Tentativa ${i + 1}/${maxRetries})`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        delay *= 2;
+      } else {
+        console.error(`Erro ao ler arquivo ${filePath}:`, error);
+        return [];
+      }
     }
-    console.error(`Erro ao ler arquivo ${filePath}:`, error);
-    return [];
   }
+  return [];
 }
 
 async function escreverBanco(filePath, data) {
-  try {
-    await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
-  } catch (error) {
-    console.error(`Erro ao escrever no arquivo ${filePath}:`, error);
-    throw new Error('Falha na gravação do banco de dados.');
+  const maxRetries = 5;
+  let delay = 100;
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
+      return; // Sucesso!
+    } catch (error) {
+      const isLocked = error.code === 'EBUSY' || error.code === 'EPERM' || error.code === 'EACCES';
+      if (isLocked && i < maxRetries - 1) {
+        console.warn(`[AVISO] Gravação bloqueada em ${filePath}. Tentando novamente em ${delay}ms... (Tentativa ${i + 1}/${maxRetries})`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        delay *= 2; // Backoff exponencial
+      } else {
+        console.error(`Erro ao escrever no arquivo ${filePath}:`, error);
+        throw new Error(`Falha na gravação do banco de dados: ${error.message}`);
+      }
+    }
   }
 }
 
@@ -115,8 +154,8 @@ app.post('/api/professores/registro', async (req, res) => {
     const { senha: _, ...professorPublico } = novoProfessor;
     res.status(201).json(professorPublico);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Erro interno ao cadastrar professor.' });
+    console.error('Erro no registro do professor:', error);
+    res.status(500).json({ error: `Erro interno ao cadastrar professor: ${error.message}` });
   }
 });
 
